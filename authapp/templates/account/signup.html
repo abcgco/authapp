@@ -1,0 +1,47 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags static compress %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block css %}
+{{ block.super }}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body_class %}bg{% endblock %}
+
+{% block top %}
+{% endblock %}
+
+{% block inner %}
+
+<div class="container p-4 bg-white rounded">
+
+	<h1>{% trans "Sign Up" %}</h1>
+
+	{% get_providers as socialaccount_providers %}
+	{% if socialaccount_providers %}
+	<div class="socialaccount_ballot">
+	  <ul class="socialaccount_providers">
+	    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+	  </ul>
+	</div>
+	{% include "socialaccount/snippets/login_extra.html" %}
+	{% endif %}
+
+	<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+	  {% csrf_token %}
+	  {{ form|crispy }}
+	  {% if redirect_field_value %}
+	  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+	  {% endif %}
+	  <button class="btn btn-success btn-block btn-lg" type="submit">REGISTER</button>
+	</form>
+	<p class="mt-3 mb-0"><small>Already have an account?</small> <a href="{{ login_url }}" class="btn btn-outline-primary ml-3 btn-sm">LOG IN</a></p>
+</div>
+{% endblock %}
+

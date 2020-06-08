@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=authapp
+POSTGRES_USER=bPUZgorlMZJJEaygEsQcjdsPCNpxgKIM
+POSTGRES_PASSWORD=jPKyb3RgHspMI5tlyGceKetCiRcPkcChiViwwq1wDHN8k9vdV6uXcR2cCMJymncW
