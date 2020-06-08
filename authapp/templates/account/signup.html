@@ -9,7 +9,7 @@
 {% block css %}
 {{ block.super }}
 <link href="{% static 'css/login.css' %}" rel="stylesheet">
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body_class %}bg{% endblock %}
@@ -19,29 +19,78 @@
 
 {% block inner %}
 
-<div class="container p-4 bg-white rounded">
+<div class="container form-signin p-4 bg-white rounded">
 
-	<h1>{% trans "Sign Up" %}</h1>
+	<h1 class="h6 text-center">SIGN UP WITH</h1>
 
+	<div class="text-center pt-2 pb-2">
 	{% get_providers as socialaccount_providers %}
-	{% if socialaccount_providers %}
-	<div class="socialaccount_ballot">
-	  <ul class="socialaccount_providers">
-	    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-	  </ul>
+	{% for provider in socialaccount_providers %}
+		{% if provider.name == "Facebook" %}
+		  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+		     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"><i class="fab fa-facebook-f"></i>&nbsp;&nbsp;FACEBOOK</a>   <span class="mr-3 ml-3">/</span> 
+		{% elif provider.name == "Google" %}
+		  	<a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+		     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"><i class="fab fa-google"></i>&nbsp;&nbsp;GOOGLE </a>	     
+		{% endif %}
+	{% endfor %}
 	</div>
-	{% include "socialaccount/snippets/login_extra.html" %}
-	{% endif %}
+
+	<div class="text-center pt-2 pb-0">
+		<p>or</p>
+	</div>
 
 	<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-	  {% csrf_token %}
-	  {{ form|crispy }}
-	  {% if redirect_field_value %}
-	  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-	  {% endif %}
-	  <button class="btn btn-success btn-block btn-lg" type="submit">REGISTER</button>
+		{% csrf_token %}
+		<div id="div_id_first_name" class="form-group"> 
+			<div class="input-group my-2">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0"><i class="far fa-user-circle"></i></span>
+				</div>
+				<input type="text" name="first_name" placeholder="First Name" maxlength="30" class="textinput textInput form-control border-left-0 mb-0" required="" id="id_first_name"> 
+			</div>
+		</div>
+
+		<div id="div_id_last_name" class="form-group"> 
+			<div class="input-group mb-0">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0"><i class="far fa-user-circle"></i></span>
+				</div>
+				<input type="text" name="last_name" placeholder="Last Name" maxlength="30" class="textinput textInput form-control border-left-0 mb-0" required="" id="id_last_name"> 
+			</div> 
+		</div>
+
+		<div id="div_id_email" class="form-group"> 
+			<div class="input-group mb-0">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0"><i class="far fa-envelope"></i></span>
+				</div>
+				<input type="email" name="email" placeholder="E-mail" class="textinput textInput form-control border-left-0 mb-0" required="" id="id_email"> 
+			</div> 
+		</div>
+
+		<div id="div_id_password1" class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0"><i class="fa fa-lock"></i></span>
+				</div>
+		  		<input type="password" name="password1" placeholder="Password" class="textinput textInput form-control border-left-0 mb-0" required="" id="id_password1"> 
+		  </div> 
+		</div>
+
+		<div id="div_id_password2" class="form-group">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text bg-white border-right-0 pb-0 mb-0"><i class="fa fa-lock"></i></span>
+				</div>
+		  		<input type="password" name="password2" placeholder="Confirm Password" class="textinput textInput form-control border-left-0 mb-0" required="" id="id_password2">
+		  	</div> 
+		</div>
+		  {% if redirect_field_value %}
+		  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+		  {% endif %}	
+		<button class="btn btn-success btn-block btn-lg" type="submit">REGISTER</button>
 	</form>
-	<p class="mt-3 mb-0"><small>Already have an account?</small> <a href="{{ login_url }}" class="btn btn-outline-primary ml-3 btn-sm">LOG IN</a></p>
+	<p class="mt-3 mb-0 text-right"><small>Already have an account?</small> <a href="{{ login_url }}" class="btn btn-outline-primary ml-3 btn-sm">LOG IN</a></p>
 </div>
 {% endblock %}
-
